@@ -7,7 +7,7 @@ from requests.auth import HTTPBasicAuth
 
 # --- Page Configuration ---
 st.set_page_config(
-    page_title="Ogury API Tester",
+    page_title="Ogury API Dashboard",
     page_icon="⚡",
     layout="wide",
     initial_sidebar_state="collapsed",
@@ -135,8 +135,8 @@ st.markdown("""
         color: #111827 !important;
         border: 1px solid #d1d5db !important;
         border-radius: 6px !important;
-        padding: 0.4rem 0.4rem !important;
-        font-size: 0.74rem !important;
+        padding: 0.3rem 0.2rem !important;
+        font-size: 0.70rem !important;
         font-weight: 500 !important;
         white-space: nowrap !important;
         transition: all 0.2s ease !important;
@@ -147,6 +147,8 @@ st.markdown("""
         justify-content: center !important;
         text-align: center !important;
         width: 100% !important;
+        overflow: hidden !important;
+        text-overflow: ellipsis !important;
     }
     .stButton > button:hover {
         background: #f9fafb !important;
@@ -172,14 +174,36 @@ st.markdown("""
         background: rgba(255, 255, 255, 0.05) !important;
         color: #e5e7eb !important;
         border: 1px solid rgba(255, 255, 255, 0.1) !important;
-        font-size: 11px !important;
-        min-height: 28px !important;
-        height: 28px !important;
-        padding: 2px 10px !important;
+        font-size: 10px !important;
+        min-height: 24px !important;
+        height: 24px !important;
+        padding: 2px 6px !important;
     }
     div[data-testid="column"]:nth-of-type(3) button:hover {
         background: rgba(255, 255, 255, 0.15) !important;
         border-color: rgba(255, 255, 255, 0.25) !important;
+    }
+
+    
+    /* Subtle User Manual Link styling */
+    .manual-download-btn > button {
+        background: transparent !important;
+        border: none !important;
+        color: #6b7280 !important;
+        font-size: 0.75rem !important;
+        padding: 0 !important;
+        min-height: auto !important;
+        height: auto !important;
+        box-shadow: none !important;
+        justify-content: flex-start !important;
+        margin-bottom: 1.5rem !important;
+        margin-top: -1.0rem !important;
+    }
+    .manual-download-btn > button:hover {
+        color: #2563eb !important;
+        background: transparent !important;
+        transform: none !important;
+        text-decoration: underline !important;
     }
 
     /* Status Badge */
@@ -310,11 +334,27 @@ col_sidebar, col_playground, col_terminal = st.columns([0.8, 2.0, 1.2])
 # Column 1: Configuration & Status Sidebar Card
 with col_sidebar:
     with st.container(height=680):
+        
         st.markdown("""
             <div class="logo-container">
-                <h2>Ogury API <span>Tester</span></h2>
+                <h2>Ogury API <span>Dashboard</span></h2>
             </div>
         """, unsafe_allow_html=True)
+        
+        # User Manual Download Button
+        with open("User_Manual.md", "r") as f:
+            manual_content = f.read()
+            
+        # Wrap the download button in a custom div to apply the subtle link styling
+        st.markdown('<div class="manual-download-btn">', unsafe_allow_html=True)
+        st.download_button(
+            label="📖 Download User Manual",
+            data=manual_content,
+            file_name="Ogury_API_Dashboard_User_Manual.md",
+            mime="text/markdown"
+        )
+        st.markdown('</div>', unsafe_allow_html=True)
+
         
         st.markdown("<div class='sidebar-section-title'>CONFIGURATION</div>", unsafe_allow_html=True)
         client_id = st.text_input("Client ID", placeholder="Enter Client ID", label_visibility="collapsed")
@@ -523,7 +563,13 @@ with col_terminal:
         # The actual scrolling container for the response content
         with st.container(height=560, border=False):
             if res:
-                st.info(f"**{res['method']}** {res['url']} | {res['status']} | {res['timestamp']}")
+                st.markdown(f"""
+                <div style='background-color: rgba(37, 99, 235, 0.1); border-left: 4px solid #2563eb; padding: 6px 10px; border-radius: 4px; color: #e5e7eb; font-family: monospace; font-size: 11px; margin-bottom: 8px; word-break: break-all;'>
+                    <strong style='color:#60a5fa;'>{res['method']}</strong> {res['url']} <br/>
+                    <span style='color: {'#34d399' if str(res['status']).startswith('2') else '#f87171'};'>[{res['status']}]</span> | <span style='color:#9ca3af;'>{res['timestamp']}</span>
+                </div>
+                """, unsafe_allow_html=True)
+                st.markdown("<style>div[data-testid='stJson'] { font-size: 11px !important; }</style>", unsafe_allow_html=True)
                 st.json(res['data'])
             else:
                 st.code("// Waiting for requests...", language="javascript")
