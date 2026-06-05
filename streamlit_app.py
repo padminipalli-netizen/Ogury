@@ -7,7 +7,7 @@ from requests.auth import HTTPBasicAuth
 
 # --- Page Configuration ---
 st.set_page_config(
-    page_title="Ogury API Dashboard",
+    page_title="Ogury One API",
     page_icon="⚡",
     layout="wide",
     initial_sidebar_state="collapsed",
@@ -335,25 +335,24 @@ col_sidebar, col_playground, col_terminal = st.columns([0.8, 2.0, 1.2])
 with col_sidebar:
     with st.container(height=680):
         
-        st.markdown("""
-            <div class="logo-container">
-                <h2>Ogury API <span>Dashboard</span></h2>
+        import base64
+        manual_b64 = ""
+        try:
+            # User Manual Download Button
+            with open("User_Manual.md", "r", encoding="utf-8") as f:
+                manual_content = f.read()
+                manual_b64 = base64.b64encode(manual_content.encode("utf-8")).decode("utf-8")
+        except FileNotFoundError:
+            manual_b64 = ""
+            
+        st.markdown(f"""
+            <div class="logo-container" style="margin-bottom: 1.5rem;">
+                <h2 style="margin-bottom: 0.2rem;">Ogury <span>One API</span></h2>
+                <a href="data:text/markdown;base64,{manual_b64}" download="Ogury_One_API_User_Manual.md" style="color: #6b7280; font-size: 0.8rem; text-decoration: none; display: inline-block;">
+                    📖  User Manual
+                </a>
             </div>
         """, unsafe_allow_html=True)
-        
-        # User Manual Download Button
-        with open("User_Manual.md", "r") as f:
-            manual_content = f.read()
-            
-        # Wrap the download button in a custom div to apply the subtle link styling
-        st.markdown('<div class="manual-download-btn">', unsafe_allow_html=True)
-        st.download_button(
-            label="📖 Download User Manual",
-            data=manual_content,
-            file_name="Ogury_API_Dashboard_User_Manual.md",
-            mime="text/markdown"
-        )
-        st.markdown('</div>', unsafe_allow_html=True)
 
         
         st.markdown("<div class='sidebar-section-title'>CONFIGURATION</div>", unsafe_allow_html=True)
@@ -408,8 +407,8 @@ with col_playground:
             with tab1:
                 st.markdown('<div class="node-header">Node: Personas</div>', unsafe_allow_html=True)
                 c1, c2, c3, c4 = st.columns([1.1, 1.2, 1.2, 1.3])
-                c1.button("GET Catalog (All)", on_click=set_demo, args=("GET", "v1/personas"), use_container_width=True)
-                c2.button("GET Basic Personas", on_click=set_demo, args=("GET", "v1/personas?personaType=basic-persona"), use_container_width=True)
+                c1.button("GET Persona", on_click=set_demo, args=("GET", "v1/personas"), use_container_width=True)
+                c2.button("GET Basic Persona", on_click=set_demo, args=("GET", "v1/personas?personaType=basic-persona"), use_container_width=True)
                 c3.button("GET Vertical: Tech", on_click=set_demo, args=("GET", "v1/personas?category=interest&vertical=technology"), use_container_width=True)
                 c4.button("GET Persona by ID", on_click=set_demo, args=("GET", "v1/personas/7781"), use_container_width=True)
 
