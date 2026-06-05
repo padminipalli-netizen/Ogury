@@ -1,6 +1,6 @@
-# ⚡ Ogury API Tester - User Manual
+# ⚡ Ogury One API - User Manual
 
-Welcome to the **Ogury API Tester**! This interactive dashboard allows you to easily connect to the Ogury API, test pre-configured endpoints across different modules (Personas, Accounts, Deals, Reporting), and build custom API requests.
+Welcome to the **Ogury One API**! This interactive dashboard allows you to easily connect to the Ogury API, test pre-configured endpoints across different modules (Personas, Accounts, Deals, Reporting), and build custom API requests.
 
 ---
 
@@ -22,8 +22,8 @@ The middle column of the dashboard is the **Playground**, divided into 4 main ta
 
 ### 🔹 Tab 1: Personas
 Explore and manage Ogury audience personas.
-* **GET Catalog (All):** Retrieves the entire catalog of available personas. (`GET v1/personas`)
-* **GET Basic Personas:** Filters the catalog to only show basic personas. (`GET v1/personas?personaType=basic-persona`)
+* **GET Persona:** Retrieves the entire catalog of available personas. (`GET v1/personas`)
+* **GET Basic Persona:** Filters the catalog to only show basic personas. (`GET v1/personas?personaType=basic-persona`)
 * **GET Vertical: Tech:** Retrieves personas categorized under "interest" and the "technology" vertical.
 * **GET Persona by ID:** Fetches details for a specific persona ID (defaults to `7781`).
 * **POST Save Persona:** Saves a custom audience to "My Personas". Prepops an example payload including Country, Expression (Operands, Operator), Age, Gender, and Metadata.
